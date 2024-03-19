@@ -143,4 +143,29 @@ Currently working on:
 * Exploring AST analyzers to detect cycles during code development
 
 ## Final commits:
+In this final commit, we present the results of our experiments on profiling Python's garbage collector (GC) during the training of deep learning models. We focused on three models: a pure-Python CNN, a PyTorch CNN, and the MDETR vision-language model. We performed multiple runs with different GC configurations, including:
+* Calling GC.collect after each training iteration
+* Setting the generation 0 threshold to 10
+* Setting the generation 0 threshold to 1000
+* Disabling the GC entirely (threshold=0)
+
+For each configuration, we measured the average iteration time, the number of collections per generation, and the number of objects collected in each generation.
+### Key findings:
+* Disabling the GC led to the lowest iteration times across all models. 
+* Higher generation 0 thresholds reduced collection frequency and improved performance
+* The PyTorch CNN significantly outperformed the pure-Python CNN due to its optimized C/C++ backend
+* Figure below shows a comparison of the top 10 tasks (most called functions) in the MDETR model training after 6 iterations, with GC disabled and GC.collect called after each iteration. The execution time for each task is notably higher when GC.collect is called, indicating the overhead introduced by the garbage collector.
+  <img width="1443" alt="Figure 1" src="https://github.com/pmadinei/optimized-gc-for-pytorch/assets/45627032/5cb6dee5-ccd9-42da-953e-73437b30d734">
+
+* Figure below illustrates the accumulated difference in execution time between the two GC configurations (disabled and GC.collect called after each iteration) for the MDETR model training. The gap widens as the training progresses, demonstrating the cumulative impact of GC overhead on the overall training time.
+  <img width="1489" alt="Figure 2" src="https://github.com/pmadinei/optimized-gc-for-pytorch/assets/45627032/f8defc54-50cc-487e-ac48-83141eb731a6">
+
+* Figure below provides a summary of the execution profile for the MDETR model training with the generation 0 threshold set to 10. The CPU Exec (CPU Execution) dominates the total step time at 79.6%, while other categories, such as Communication, DataLoader, and Other, account for the remaining time. This breakdown helps identify potential bottlenecks and areas for optimization.
+<img width="631" alt="Figure 4" src="https://github.com/pmadinei/optimized-gc-for-pytorch/assets/45627032/4305de3b-e21e-457a-b19d-11ed30dda6bd">
+
+* This figure illustrates the same execution summary for the MDETR model training but this time with the generation 0 threshold set to 0 (GC off)
+   <img width="631" alt="Figure 3" src="https://github.com/pmadinei/optimized-gc-for-pytorch/assets/45627032/8d956c8a-4442-4c70-9ae3-501bb6c8bd7a">
+
+These results highlight the importance of carefully tuning the garbage collector settings to optimize the performance of deep learning model training in Python. By understanding the impact of GC on different tasks and adjusting the threshold values, developers can significantly reduce training time and improve overall efficiency. Future work will focus on developing more comprehensive guidelines for managing GC across a wider range of architectures and datasets, as well as exploring alternative memory management techniques tailored for deep learning workloads.
+
 Profiling log files can be downloaded [from here](https://drive.google.com/drive/folders/1w1hANyY1frnhQOMG_lPIwCjyZoCS-rPi?usp=sharing). Intructions to open these files are available [here](https://devblogs.microsoft.com/python/python-in-visual-studio-code-february-2021-release/).
