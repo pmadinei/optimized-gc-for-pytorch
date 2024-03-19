@@ -1,0 +1,8 @@
+{
+  "combine_datasets": ["flickr"],
+  "combine_datasets_val": ["flickr"],
+  "GT_type" : "separate",
+  "flickr_img_path" : "/home/parsa/Dataset/parsa/flickr30k/flickr30k-images/",
+  "flickr_dataset_path" : "/home/parsa/Dataset/parsa/flickr30k/annotations/",
+  "flickr_ann_path" : "/home/parsa/Dataset/parsa/mdetr_annotations/"
+}
