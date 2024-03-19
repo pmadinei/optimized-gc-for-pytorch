@@ -142,7 +142,7 @@ Currently working on:
 * Use monkey patching to automatically detect and log cycles during model initialization
 * Exploring AST analyzers to detect cycles during code development
 
-## Final commits:
+## Final commit:
 In this final commit, we present the results of our experiments on profiling Python's garbage collector (GC) during the training of deep learning models. We focused on three models: a pure-Python CNN, a PyTorch CNN, and the MDETR vision-language model. We performed multiple runs with different GC configurations, including:
 * Calling GC.collect after each training iteration
 * Setting the generation 0 threshold to 10
