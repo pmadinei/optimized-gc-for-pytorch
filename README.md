@@ -141,3 +141,6 @@ Currently working on:
 * Experiment with monkey patching to intercept and modify parts of the GC module and object allocation
 * Use monkey patching to automatically detect and log cycles during model initialization
 * Exploring AST analyzers to detect cycles during code development
+
+## Final commits:
+Profiling log files can be downloaded [from here](https://drive.google.com/drive/folders/1w1hANyY1frnhQOMG_lPIwCjyZoCS-rPi?usp=sharing). Intructions to open these files are available [here](https://devblogs.microsoft.com/python/python-in-visual-studio-code-february-2021-release/).
